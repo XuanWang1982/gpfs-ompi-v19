@@ -22,7 +22,7 @@ AC_DEFUN([OMPI_CHECK_SIOX],[
     AC_ARG_WITH([siox],
         [AC_HELP_STRING([--with-siox(=DIR)],
              [Build SIOX support, optionally adding DIR/include, DIR/lib, and DIR/lib64 to the search path for headers and libraries])])
-    OMPI_CHECK_WITHDIR([siox], [$with_siox], [include/C/siox.h])
+    OPAL_CHECK_WITHDIR([siox], [$with_siox], [include/C/siox.h])
 
     AS_IF([test -z "$with_siox"],
           [ompi_check_siox_dir="/usr"],
@@ -35,7 +35,7 @@ AC_DEFUN([OMPI_CHECK_SIOX],[
     fi
 
     # Add correct -I and -L flags
-    OMPI_CHECK_PACKAGE([$1], [C/siox.h], [siox-monitoring-siox-ll], [siox_initialize_monitoring], [],
+    OPAL_CHECK_PACKAGE([$1], [C/siox.h], [siox-monitoring-siox-ll], [siox_initialize_monitoring], [],
                        [$ompi_check_siox_dir], [$ompi_check_siox_libdir], [ompi_check_siox_happy="yes"],
                        [ompi_check_siox_happy="no"],[#include <C/siox.h>])
 

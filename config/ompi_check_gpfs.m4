@@ -22,7 +22,7 @@ AC_DEFUN([OMPI_CHECK_GPFS],[
     AC_ARG_WITH([gpfs],
         [AC_HELP_STRING([--with-gpfs(=DIR)],
              [Build GPFS support, optionally adding DIR/include, DIR/lib, and DIR/lib64 to the search path for headers and libraries])])
-    OMPI_CHECK_WITHDIR([gpfs], [$with_gpfs], [include/gpfs.h])
+    OPAL_CHECK_WITHDIR([gpfs], [$with_gpfs], [include/gpfs.h])
 
     AS_IF([test -z "$with_gpfs"],
           [ompi_check_gpfs_dir="/usr"],
@@ -35,7 +35,7 @@ AC_DEFUN([OMPI_CHECK_GPFS],[
     fi
 
     # Add correct -I and -L flags
-    OMPI_CHECK_PACKAGE([$1], [gpfs.h], [gpfs], [gpfs_lib_init], [],
+    OPAL_CHECK_PACKAGE([$1], [gpfs.h], [gpfs], [gpfs_lib_init], [],
                        [$ompi_check_gpfs_dir], [$ompi_check_gpfs_libdir], [ompi_check_gpfs_happy="yes"],
                        [ompi_check_gpfs_happy="no"], [#include <gpfs.h>])
 
