@@ -39,6 +39,10 @@
 #include "ompi/datatype/ompi_datatype.h"
 #include "ompi/request/request.h"
 
+#ifdef HAVE_C_SIOX_H
+#include "C/siox.h"
+#endif
+
 extern int mca_io_ompio_cycle_buffer_size;
 extern int mca_io_ompio_bytes_per_agg;
 extern int mca_io_ompio_record_offset_info;
@@ -95,7 +99,8 @@ enum ompio_fs_type
     UFS = 1,
     PVFS2 = 2,
     LUSTRE = 3,
-    PLFS = 4
+    PLFS = 4,
+    GPFS = 5
 };
 
 OMPI_DECLSPEC extern mca_io_base_component_2_0_0_t mca_io_ompio_component;
@@ -209,7 +214,12 @@ struct mca_io_ompio_file_t {
     mca_fbtl_base_module_t     *f_fbtl;
     mca_sharedfp_base_module_t *f_sharedfp;
 
-    /* No Error handling done yet
+    /* for SIOX functions */
+#ifdef SIOX_API_H
+    siox_activity *f_siox_activity;
+    siox_component *f_siox_component;
+#endif
+   /* No Error handling done yet
     struct ompi_errhandler_t *error_handler;
     ompi_errhandler_type_t errhandler_type;
     */
