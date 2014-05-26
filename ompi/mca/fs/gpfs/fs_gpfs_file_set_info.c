@@ -917,7 +917,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxAccessRange", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value(fh->f_siox_component, siox_attribute_array[i], optimal_value_str);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
 		printf("Getting optimal value of sioxAccessRange hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
@@ -930,7 +930,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxFreeRange", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value(fh->f_siox_component, siox_attribute_array[i], optimal_value_str);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
 		printf("Getting optimal value of sioxFreeRange hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
@@ -943,7 +943,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxClearFileCache", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value(fh->f_siox_component, siox_attribute_array[i], optimal_value_str);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
 		printf("Getting optimal value of sioxClearFileCache hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
