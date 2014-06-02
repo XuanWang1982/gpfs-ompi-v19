@@ -956,6 +956,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxCancelHints", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
+		printf("Getting optimal value of sioxCancelHints hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
 
@@ -967,6 +969,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxDataShipStart", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
+		printf("Getting optimal value of sioxDataShipStart hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
 
@@ -978,6 +982,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxDataShipStop", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
+		printf("Getting optimal value of sioxDataShipStop hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
 
@@ -989,6 +995,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxSetReplication", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
+		printf("Getting optimal value of sioxSetReplication hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
 
@@ -1000,6 +1008,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxByteRange", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
+		printf("Getting optimal value of sioxByteRange hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
 
@@ -1011,6 +1021,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxRestripeData", SIOX_STORAGE_64_BIT_UINTEGER);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
+		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
+		printf("Getting optimal value of sioxRestripeData hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
 
