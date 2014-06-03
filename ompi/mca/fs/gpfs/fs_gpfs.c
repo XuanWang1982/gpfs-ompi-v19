@@ -159,6 +159,7 @@ int mca_fs_gpfs_module_finalize(mca_io_ompio_file_t *file) {
 	siox_activity_end(file->f_siox_activity);
 	siox_component_unregister(file->f_siox_component);
 #endif*/
+	printf("Finalizing test test test test\n");
 	return OMPI_SUCCESS;
 }
 
