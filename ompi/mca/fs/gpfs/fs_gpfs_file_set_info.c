@@ -1049,6 +1049,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	siox_activity_stop(fh->f_siox_activity);
 	siox_activity_end(fh->f_siox_activity);
 	siox_component_unregister(fh->f_siox_component);
+	printf("TESTING SIOX FINAL\n");
+	sioxFinal();
 #else
 	info_selected = info;
 #endif
