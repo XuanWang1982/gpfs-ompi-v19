@@ -237,11 +237,11 @@ int mca_fs_gpfs_prefetch_hints_for_siox(int access_mode,
 	}
 	else {
 		//TODO
-#ifdef SIOX_API_H
+/*#ifdef SIOX_API_H
 		printf("Don't use the SIOX system but still need to stop the activity.\n");
 		siox_activity_start(fh->f_siox_activity);
 		siox_activity_stop(fh->f_siox_activity);
-#endif
+#endif*/
 	}
 
 	//Setting GPFS Hints 1 - gpfsAccessRange
@@ -878,6 +878,28 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	char value[MPI_MAX_INFO_VAL + 1], sioxHintsKey[50];
 	char** optimal_value_str;
 	int rc = 0, valueLen = MPI_MAX_INFO_VAL, flag;
+	//START SIOX initialization
+	printf("Initializing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
+	siox_unique_interface *siox_gpfs_uiid = NULL;
+	siox_component *siox_gpfs_component = NULL;
+	siox_component_activity *siox_gpfs_component_activity = NULL;
+
+	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
+			"OMPIO");
+	siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "");
+	siox_gpfs_component_activity = siox_component_register_activity(
+			siox_gpfs_uiid, "GPFS_hints");
+
+	printf("Beginning the SIOX_activity in mca_fs_gpfs_siox_io_selection()\n");
+
+	fh->f_siox_component = siox_gpfs_component;
+	fh->f_siox_activity = siox_activity_begin(siox_gpfs_component,
+			siox_gpfs_component_activity);
+
+	printf("Starting the SIOX_activity\n");
+	siox_activity_start(fh->f_siox_activity);
+	//END SIOX initialization
+
 
 	//START inquiring SIOX knowledge base
 	printf("Get I/O Pattern from the SIOX Knowledge Base\n");
@@ -889,9 +911,6 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 
 	//END choosing the best I/O pattern
 	info_selected = info;
-
-	printf("Starting the SIOX_activity\n");
-	siox_activity_start(fh->f_siox_activity);
 
 	printf("Starting setting the SIOX_activity_attribute\n");
 	siox_attribute **siox_attribute_array;
@@ -1026,7 +1045,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		i++;
 	}
 
+	printf("Finalizing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
 	siox_activity_stop(fh->f_siox_activity);
+	siox_activity_end(fh->f_siox_activity);
+	siox_component_unregister(fh->f_siox_component);
 #else
 	info_selected = info;
 #endif

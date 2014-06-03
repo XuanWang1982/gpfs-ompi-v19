@@ -129,8 +129,7 @@ int mca_fs_gpfs_component_file_unquery(mca_io_ompio_file_t *file) {
 
 int mca_fs_gpfs_module_init(mca_io_ompio_file_t *file) {
 
-	//TODO Add codes to skip the SIOX initialization if SIOX is not needed
-#ifdef SIOX_API_H
+/*#ifdef SIOX_API_H
 	//START SIOX initialization
 	printf("Initializing the SIOX in mca_fs_gpfs_module_init()\n");
 	siox_unique_interface *siox_gpfs_uiid = NULL;
@@ -149,18 +148,17 @@ int mca_fs_gpfs_module_init(mca_io_ompio_file_t *file) {
 	file->f_siox_activity = siox_activity_begin(siox_gpfs_component,
 			siox_gpfs_component_activity);
 	//END SIOX initialization
-#endif
+#endif*/
 	return OMPI_SUCCESS;
 }
 
 int mca_fs_gpfs_module_finalize(mca_io_ompio_file_t *file) {
 
-	//TODO Add codes to skip the SIOX Finalizing if SIOX is not needed
-#ifdef SIOX_API_H
+/*#ifdef SIOX_API_H
 	printf("Finalizing the SIOX in mca_fs_gpfs_module_finalize()\n");
 	siox_activity_end(file->f_siox_activity);
 	siox_component_unregister(file->f_siox_component);
-#endif
+#endif*/
 	return OMPI_SUCCESS;
 }
 
