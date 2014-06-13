@@ -875,8 +875,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		struct ompi_info_t *info, struct ompi_info_t *info_selected) {
 
 #ifdef SIOX_API_H
-	char value[MPI_MAX_INFO_VAL + 1], sioxHintsKey[50];
-	char* optimal_value_str = NULL;
+	char value[MPI_MAX_INFO_VAL + 1], sioxHintsKey[50], optimal_value_str[255];
+	//char* optimal_value_str = NULL;
 	int rc = 0, valueLen = MPI_MAX_INFO_VAL, flag;
 	//START SIOX initialization
 	printf("Initializing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
