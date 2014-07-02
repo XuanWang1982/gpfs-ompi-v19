@@ -933,7 +933,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxAccessRange hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxAccessRange", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxAccessRange", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -946,7 +946,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxFreeRange hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxFreeRange", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxFreeRange", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -959,7 +959,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxClearFileCache hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxClearFileCache", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxClearFileCache", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -972,7 +972,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxCancelHints hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxCancelHints", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxCancelHints", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -985,7 +985,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxDataShipStart hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxDataShipStart", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxDataShipStart", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -998,7 +998,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxDataShipStop hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxDataShipStop", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxDataShipStop", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -1011,7 +1011,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxSetReplication hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxSetReplication", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxSetReplication", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -1024,7 +1024,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxByteRange hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxByteRange", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxByteRange", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
@@ -1037,7 +1037,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	if (flag) {
 		printf("Setting sioxRestripeData hints to SIOX activity attribute.\n");
 		siox_attribute_array[i] = siox_ontology_register_attribute("MPI/GPFS",
-				"sioxRestripeData", SIOX_STORAGE_64_BIT_UINTEGER);
+				"sioxRestripeData", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
 		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
