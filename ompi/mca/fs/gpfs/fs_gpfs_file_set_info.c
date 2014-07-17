@@ -884,8 +884,8 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	siox_component *siox_gpfs_component = NULL;
 	siox_component_activity *siox_gpfs_component_activity = NULL;
 
-	siox_gpfs_uiid = siox_system_information_lookup_interface_id("OpenMPI",
-			"OMPIO");
+	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
+			"Generic");
 	siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
 	siox_gpfs_component_activity = siox_component_register_activity(
 			siox_gpfs_uiid, "GPFS_hints");
