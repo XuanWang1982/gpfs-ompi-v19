@@ -879,17 +879,20 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	//char* optimal_value_str = NULL;
 	int rc = 0, valueLen = MPI_MAX_INFO_VAL, flag;
 	//START SIOX initialization
-	printf("Initializing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
-	siox_unique_interface *siox_gpfs_uiid = NULL;
-	siox_component *siox_gpfs_component = NULL;
-	siox_component_activity *siox_gpfs_component_activity = NULL;
-
-	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
+	//printf("Initializing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
+	//siox_unique_interface *siox_gpfs_uiid = NULL;
+	//siox_component *siox_gpfs_component = NULL;
+	//siox_component_activity *siox_gpfs_component_activity = NULL;
+	if (siox_gpfs_uiid == SIOX_INVALID_ID){
+		siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
 			"Generic");
-	siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
-	siox_gpfs_component_activity = siox_component_register_activity(
+		if (!siox_component_is_registered(siox_gpfs_uiid)){
+			printf("SIOX Component MPI Generic is NOT registered!\n");
+			siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
+		}
+		siox_gpfs_component_activity = siox_component_register_activity(
 			siox_gpfs_uiid, "GPFS_hints");
-
+	}
 	printf("Beginning the SIOX_activity in mca_fs_gpfs_siox_io_selection()\n");
 
 	fh->f_siox_component = siox_gpfs_component;

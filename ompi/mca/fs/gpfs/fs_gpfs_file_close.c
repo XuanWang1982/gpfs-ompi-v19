@@ -29,7 +29,7 @@
 #include "ompi/mca/fs/fs.h"
 
 /*
- *	file_close_lustre
+ *	file_close_gpfs
  *
  *	Function:	- closes a new file
  *	Accepts:	- file handle

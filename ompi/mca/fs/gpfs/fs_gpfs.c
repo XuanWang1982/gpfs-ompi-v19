@@ -128,7 +128,6 @@ int mca_fs_gpfs_component_file_unquery(mca_io_ompio_file_t *file) {
 }
 
 int mca_fs_gpfs_module_init(mca_io_ompio_file_t *file) {
-
 /*#ifdef SIOX_API_H
 	//START SIOX initialization
 	printf("Initializing the SIOX in mca_fs_gpfs_module_init()\n");
