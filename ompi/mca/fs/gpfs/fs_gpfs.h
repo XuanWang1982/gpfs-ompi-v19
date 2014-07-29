@@ -35,11 +35,11 @@
 
 extern int mca_fs_gpfs_priority;
 
-#ifdef SIOX_API_H
+/*#ifdef SIOX_API_H
 extern siox_unique_interface *siox_gpfs_uiid;
 extern siox_component *siox_gpfs_component;
 extern siox_component_activity *siox_gpfs_component_activity;
-#endif
+#endif*/
 
 BEGIN_C_DECLS
 

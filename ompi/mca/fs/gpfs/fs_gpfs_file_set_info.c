@@ -879,10 +879,6 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	//char* optimal_value_str = NULL;
 	int rc = 0, valueLen = MPI_MAX_INFO_VAL, flag;
 	//START SIOX initialization
-	//printf("Initializing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
-	//siox_unique_interface *siox_gpfs_uiid = NULL;
-	//siox_component *siox_gpfs_component = NULL;
-	//siox_component_activity *siox_gpfs_component_activity = NULL;
 	if (siox_gpfs_uiid == SIOX_INVALID_ID){
 		siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
 			"Generic");
@@ -1048,10 +1044,9 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		i++;
 	}
 
-	printf("Finalizing the SIOX in mca_fs_gpfs_siox_io_selection()\n");
+	printf("Stopping and ending the SIOX activity in mca_fs_gpfs_siox_io_selection()\n");
 	siox_activity_stop(fh->f_siox_activity);
 	siox_activity_end(fh->f_siox_activity);
-	siox_component_unregister(fh->f_siox_component);
 #else
 	info_selected = info;
 #endif

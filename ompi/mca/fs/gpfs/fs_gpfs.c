@@ -25,11 +25,6 @@
 #include "ompi/mca/fs/base/base.h"
 #include "ompi/mca/fs/gpfs/fs_gpfs.h"
 
-//TODO ifdef SIOX blablabla
-//#ifdef HAVE_SIOX_H
-//#include "C/siox.h"
-//#endif
-
 #ifdef HAVE_SYS_STATFS_H
 #include <sys/statfs.h> /* or <sys/vfs.h> */ 
 #endif
@@ -128,36 +123,10 @@ int mca_fs_gpfs_component_file_unquery(mca_io_ompio_file_t *file) {
 }
 
 int mca_fs_gpfs_module_init(mca_io_ompio_file_t *file) {
-/*#ifdef SIOX_API_H
-	//START SIOX initialization
-	printf("Initializing the SIOX in mca_fs_gpfs_module_init()\n");
-	siox_unique_interface *siox_gpfs_uiid = NULL;
-	siox_component *siox_gpfs_component = NULL;
-	siox_component_activity *siox_gpfs_component_activity = NULL;
-
-	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
-			"OMPIO");
-	siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "");
-	siox_gpfs_component_activity = siox_component_register_activity(
-			siox_gpfs_uiid, "GPFS_hints");
-
-	printf("Beginning the SIOX_activity in mca_fs_gpfs_module_init()\n");
-
-	file->f_siox_component = siox_gpfs_component;
-	file->f_siox_activity = siox_activity_begin(siox_gpfs_component,
-			siox_gpfs_component_activity);
-	//END SIOX initialization
-#endif*/
 	return OMPI_SUCCESS;
 }
 
 int mca_fs_gpfs_module_finalize(mca_io_ompio_file_t *file) {
-
-/*#ifdef SIOX_API_H
-	printf("Finalizing the SIOX in mca_fs_gpfs_module_finalize()\n");
-	siox_activity_end(file->f_siox_activity);
-	siox_component_unregister(file->f_siox_component);
-#endif*/
 	return OMPI_SUCCESS;
 }
 

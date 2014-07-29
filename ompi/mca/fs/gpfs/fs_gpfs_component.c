@@ -31,12 +31,6 @@ static int gpfs_register(void);
 
 int mca_fs_gpfs_priority = 20;
 
-#ifdef SIOX_API_H
-siox_unique_interface *siox_gpfs_uiid = NULL;
-siox_component *siox_gpfs_component = NULL;
-siox_component_activity *siox_gpfs_component_activity = NULL;
-#endif
-
 /*
  * Instantiate the public struct with all of our public information
  * and pointers to our public functions in it
@@ -77,16 +71,5 @@ gpfs_register(void)
                                            MCA_BASE_VAR_TYPE_INT, NULL, 0, 0,
                                            OPAL_INFO_LVL_9,
                                            MCA_BASE_VAR_SCOPE_READONLY, &mca_fs_gpfs_priority);
-
-#ifdef SIOX_API_H
-	printf("Initializing the SIOX in gpfs_register()\n");
-	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
-			"Generic");
-	siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
-	siox_gpfs_component_activity = siox_component_register_activity(
-			siox_gpfs_uiid, "GPFS_hints");
-
-#endif
-										   
     return OMPI_SUCCESS;
 }
