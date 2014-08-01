@@ -209,7 +209,7 @@ static int open_component(void)
 
     OBJ_CONSTRUCT(&mca_io_ompio_pending_requests, opal_list_t);
 
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
 	printf("Initializing the SIOX in io_ompio_component->open_component(void)\n");
 	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
 			"Generic");
