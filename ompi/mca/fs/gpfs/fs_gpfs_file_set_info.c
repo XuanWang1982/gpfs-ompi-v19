@@ -237,7 +237,7 @@ int mca_fs_gpfs_prefetch_hints_for_siox(int access_mode,
 	}
 	else {
 		//TODO
-/*#ifdef SIOX_API_H
+/*#ifdef HAVE_C_SIOX_H
 		printf("Don't use the SIOX system but still need to stop the activity.\n");
 		siox_activity_start(fh->f_siox_activity);
 		siox_activity_stop(fh->f_siox_activity);
@@ -874,7 +874,7 @@ int mca_fs_gpfs_prefetch_hints_for_siox(int access_mode,
 int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		struct ompi_info_t *info, struct ompi_info_t *info_selected) {
 
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
 	char value[MPI_MAX_INFO_VAL + 1], sioxHintsKey[50], optimal_value_str[255];
 	//char* optimal_value_str = NULL;
 	int rc = 0, valueLen = MPI_MAX_INFO_VAL, flag;

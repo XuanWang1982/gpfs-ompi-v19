@@ -88,7 +88,7 @@ opal_list_t mca_io_ompio_pending_requests;
 const char *mca_io_ompio_component_version_string =
 "OMPI/MPI OMPIO io MCA component version " OMPI_VERSION;
 
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
 siox_unique_interface *siox_gpfs_uiid = NULL;
 siox_component *siox_gpfs_component = NULL;
 siox_component_activity *siox_gpfs_component_activity = NULL;
@@ -209,7 +209,7 @@ static int open_component(void)
 
     OBJ_CONSTRUCT(&mca_io_ompio_pending_requests, opal_list_t);
 
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
 	printf("Initializing the SIOX in io_ompio_component->open_component(void)\n");
 	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
 			"Generic");
@@ -231,7 +231,7 @@ static int close_component(void)
     OBJ_DESTRUCT(&mca_io_ompio_pending_requests);
 
     OBJ_DESTRUCT(&mca_io_ompio_mutex);
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
 	printf("Finalizing the SIOX in io_ompio_component->close_component(void)\n");
 	siox_component_unregister(siox_gpfs_component);
 #endif

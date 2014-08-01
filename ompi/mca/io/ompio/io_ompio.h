@@ -49,7 +49,7 @@ extern int mca_io_ompio_record_offset_info;
 extern int mca_io_ompio_sharedfp_lazy_open;
 OMPI_DECLSPEC extern int mca_io_ompio_coll_timing_info;
 
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
 extern siox_unique_interface *siox_gpfs_uiid;
 extern siox_component *siox_gpfs_component;
 extern siox_component_activity *siox_gpfs_component_activity;
@@ -221,7 +221,7 @@ struct mca_io_ompio_file_t {
     mca_sharedfp_base_module_t *f_sharedfp;
 
     /* for SIOX functions */
-#ifdef SIOX_API_H
+#ifdef HAVE_C_SIOX_H
     siox_activity *f_siox_activity;
     siox_component *f_siox_component;
 #endif
