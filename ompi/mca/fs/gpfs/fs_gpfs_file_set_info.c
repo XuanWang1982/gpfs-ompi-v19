@@ -925,6 +925,12 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		exit(0);
 	}
 	//END Registering the SIOX activities' attributes
+	// Setting the fileNameAttribute
+	siox_attribute_array[i] = siox_ontology_register_attribute("MPI",
+				"descriptor/filename", SIOX_STORAGE_STRING);
+	siox_activity_set_attribute(fh->f_siox_activity,
+				siox_attribute_array[i], fh->f_filename);
+	i++;
 
 	//START setting the siox activity attributes
 	strcpy(sioxHintsKey, "sioxAccessRange");
@@ -1043,7 +1049,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		printf("Getting optimal value of sioxRestripeData hints from SIOX: %s \n", optimal_value_str);
 		i++;
 	}
-
+	
 	printf("Stopping and ending the SIOX activity in mca_fs_gpfs_siox_io_selection()\n");
 	siox_activity_stop(fh->f_siox_activity);
 	siox_activity_end(fh->f_siox_activity);
