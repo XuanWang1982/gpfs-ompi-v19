@@ -19,19 +19,12 @@
 
 #include "ompi_config.h"
 #include "fs_gpfs.h"
-
 #include "mpi.h"
-
 #include "ompi/constants.h"
 #include "ompi/mca/fs/fs.h"
 
 #include <unistd.h>
 #include <string.h>
-
-//TODO ifdef SIOX blablabla
-//#ifdef HAVE_C_SIOX_H
-//#include "C/siox.h"
-//#endif
 
 #include <gpfs.h>
 #include <fcntl.h>
@@ -46,7 +39,7 @@
  *	Returns:	- Success if info is set
  */
 
-struct {
+/*struct {
 	gpfsFcntlHeader_t gpfsFcntlHeader;
 	gpfsAccessRange_t gpfsAccessRange;
 	gpfsFreeRange_t gpfsFreeRange;
@@ -73,7 +66,7 @@ struct {
 	gpfsGetExpTime_t gpfsGetExpTime;
 	gpfsSetAppendOnly_t gpfsSetAppendOnly;
 	gpfsGetAppendOnly_t gpfsGetAppendOnly;
-} all_gpfs_hints;
+} all_gpfs_hints;*/
 
 struct {
 	gpfsFcntlHeader_t gpfsFcntlHeader;
@@ -145,7 +138,8 @@ struct {
 	gpfsRestripeData_t gpfsRestripeData;
 } gpfs_hints_14;
 
-struct {
+//TODO
+/*struct {
 	gpfsFcntlHeader_t gpfsFcntlHeader;
 	gpfsRestripeRange_t gpfsRestripeRange;
 } gpfs_hints_15;
@@ -198,7 +192,7 @@ struct {
 struct {
 	gpfsFcntlHeader_t gpfsFcntlHeader;
 	gpfsGetAppendOnly_t gpfsGetAppendOnly;
-} gpfs_hints_25;
+} gpfs_hints_25;*/
 
 int mca_fs_gpfs_file_set_info(mca_io_ompio_file_t *fh, struct ompi_info_t *info) {
 	printf("GPFS SET INFO\n");
@@ -229,19 +223,12 @@ int mca_fs_gpfs_prefetch_hints_for_siox(int access_mode,
 	ompi_info_get(info_selected, gpfsHintsKey, valueLen, value, &flag);
 	if (flag & strcmp(value, "true") == 0) {
 		//using the SIOX lib and the I/O pattern selection
-		printf("User SIOX Lib is set: %s: %s\n", gpfsHintsKey, value);
-
 		ret = mca_fs_gpfs_siox_io_selection(fh, info, info_selected);
 		if (ret != OMPI_SUCCESS)
 			return ret;
 	}
 	else {
-		//TODO
-/*#ifdef HAVE_C_SIOX_H
-		printf("Don't use the SIOX system but still need to stop the activity.\n");
-		siox_activity_start(fh->f_siox_activity);
-		siox_activity_stop(fh->f_siox_activity);
-#endif*/
+		//TODO Sending the MPI_INFO to SIOX for knowledgebase
 	}
 
 	//Setting GPFS Hints 1 - gpfsAccessRange
@@ -875,8 +862,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 		struct ompi_info_t *info, struct ompi_info_t *info_selected) {
 
 #ifdef HAVE_C_SIOX_H
-	char value[MPI_MAX_INFO_VAL + 1], sioxHintsKey[50], optimal_value_str[255];
-	//char* optimal_value_str = NULL;
+	char value[MPI_MAX_INFO_VAL + 1], sioxHintsKey[50], optimal_value_str[MPI_MAX_INFO_VAL + 1];
 	int rc = 0, valueLen = MPI_MAX_INFO_VAL, flag;
 	//START SIOX initialization
 	if (siox_gpfs_uiid == SIOX_INVALID_ID){
@@ -894,21 +880,9 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 	fh->f_siox_component = siox_gpfs_component;
 	fh->f_siox_activity = siox_activity_begin(siox_gpfs_component,
 			siox_gpfs_component_activity);
-
-	printf("Starting the SIOX_activity\n");
 	siox_activity_start(fh->f_siox_activity);
 	//END SIOX initialization
 
-
-	//START inquiring SIOX knowledge base
-	printf("Get I/O Pattern from the SIOX Knowledge Base\n");
-
-	//END inquiring SIOX knowledge base
-	//START choosing the best I/O pattern
-	printf(
-			"Choose the I/O Pattern either from the SIOX Knowledge Base or the local hints set by user\n");
-
-	//END choosing the best I/O pattern
 	info_selected = info;
 
 	printf("Starting setting the SIOX_activity_attribute\n");
@@ -941,8 +915,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxAccessRange", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxAccessRange hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxAccessRange hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -954,8 +930,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxFreeRange", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxFreeRange hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxFreeRange hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -967,8 +945,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxClearFileCache", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxClearFileCache hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxClearFileCache hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -980,8 +960,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxCancelHints", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxCancelHints hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxCancelHints hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -993,8 +975,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxDataShipStart", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxDataShipStart hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxDataShipStart hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -1006,8 +990,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxDataShipStop", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxDataShipStop hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxDataShipStop hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -1019,8 +1005,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxSetReplication", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxSetReplication hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxSetReplication hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -1032,8 +1020,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxByteRange", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxByteRange hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxByteRange hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 
@@ -1045,8 +1035,10 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 				"sioxRestripeData", SIOX_STORAGE_STRING);
 		siox_activity_set_attribute(fh->f_siox_activity,
 				siox_attribute_array[i], &value);
-		siox_suggest_optimal_value_for(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str);
-		printf("Getting optimal value of sioxRestripeData hints from SIOX: %s \n", optimal_value_str);
+		if(siox_suggest_optimal_value_for_str(fh->f_siox_component, siox_attribute_array[i], fh->f_siox_activity, optimal_value_str, valueLen)) {
+			printf("Getting optimal value of sioxRestripeData hints from SIOX: %s \n", optimal_value_str);
+			ompi_info_set(info_selected, sioxHintsKey, optimal_value_str);
+		}
 		i++;
 	}
 	
