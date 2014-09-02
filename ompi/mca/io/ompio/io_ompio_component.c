@@ -92,6 +92,7 @@ const char *mca_io_ompio_component_version_string =
 siox_unique_interface *siox_gpfs_uiid = NULL;
 siox_component *siox_gpfs_component = NULL;
 siox_component_activity *siox_gpfs_component_activity = NULL;
+int extern_siox_is_registered = 0;
 #endif
 
 mca_io_base_component_2_0_0_t mca_io_ompio_component = {
@@ -213,9 +214,14 @@ static int open_component(void)
 	printf("Initializing the SIOX in io_ompio_component->open_component(void)\n");
 	siox_gpfs_uiid = siox_system_information_lookup_interface_id("MPI",
 			"Generic");
-	siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
-	siox_gpfs_component_activity = siox_component_register_activity(
-			siox_gpfs_uiid, "GPFS_hints");
+	if(!siox_component_is_registered(siox_gpfs_uiid)) {
+		siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
+		siox_gpfs_component_activity = siox_component_register_activity(
+			siox_gpfs_uiid, "MPI_File_open");
+	}
+	else {
+		extern_siox_is_registered = 1;
+	}
 #endif
 
     return OMPI_SUCCESS;
@@ -232,8 +238,10 @@ static int close_component(void)
 
     OBJ_DESTRUCT(&mca_io_ompio_mutex);
 #ifdef HAVE_C_SIOX_H
-	printf("Finalizing the SIOX in io_ompio_component->close_component(void)\n");
-	siox_component_unregister(siox_gpfs_component);
+	if(!extern_siox_is_registered){
+		printf("Finalizing the SIOX in io_ompio_component->close_component(void)\n");
+		siox_component_unregister(siox_gpfs_component);
+	}
 #endif
     return OMPI_SUCCESS;
 }

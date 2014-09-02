@@ -221,7 +221,7 @@ int mca_fs_gpfs_prefetch_hints_for_siox(int access_mode,
 
 	strcpy(gpfsHintsKey, "useSIOXLib");
 	ompi_info_get(info_selected, gpfsHintsKey, valueLen, value, &flag);
-	if (flag & strcmp(value, "true") == 0) {
+	if (!extern_siox_is_registered && flag && strcmp(value, "true") == 0) {
 		//using the SIOX lib and the I/O pattern selection
 		ret = mca_fs_gpfs_siox_io_selection(fh, info, info_selected);
 		if (ret != OMPI_SUCCESS)
@@ -873,7 +873,7 @@ int mca_fs_gpfs_siox_io_selection(mca_io_ompio_file_t *fh,
 			siox_gpfs_component = siox_component_register(siox_gpfs_uiid, "GPFS");
 		}
 		siox_gpfs_component_activity = siox_component_register_activity(
-			siox_gpfs_uiid, "GPFS_hints");
+			siox_gpfs_uiid, "MPI_File_open");
 	}
 	printf("Beginning the SIOX_activity in mca_fs_gpfs_siox_io_selection()\n");
 

@@ -53,6 +53,7 @@ OMPI_DECLSPEC extern int mca_io_ompio_coll_timing_info;
 extern siox_unique_interface *siox_gpfs_uiid;
 extern siox_component *siox_gpfs_component;
 extern siox_component_activity *siox_gpfs_component_activity;
+extern int extern_siox_is_registered;
 #endif
 
 /*
